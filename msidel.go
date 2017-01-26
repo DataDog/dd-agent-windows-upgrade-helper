@@ -13,6 +13,7 @@ type Handle uintptr
 
 const GENERIC_READ uint32 = 0x80000000
 const NO_ERROR syscall.Errno = 0
+const ERROR_SERVICE_DOES_NOT_EXIST syscall.Errno = 1060
 
 func isServiceInstalled() (installed bool, err error) {
     var hSCM uintptr 
@@ -93,7 +94,7 @@ func mainfunc() int {
             fmt.Printf("service installed as other user")
             return 1638
         }
-        if !installed && err == NO_ERROR {
+        if !installed && (err == NO_ERROR || err == ERROR_SERVICE_DOES_NOT_EXIST) {
             fmt.Printf("Service not installed")
             return 0
         }
