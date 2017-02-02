@@ -55,7 +55,7 @@ func findAndUninstallRelatedProducts(upgradeCode string, doUninstall bool) (bFou
 	var mod = syscall.NewLazyDLL("msi.dll")
 	var MsiSetInternalUI = mod.NewProc("MsiSetInternalUI")
 	var MsiEnumRelatedProducts = mod.NewProc("MsiEnumRelatedProductsW")
-	var MsiConfigureProduct = mod.NewProc("MsiConfigureProduct")
+	var MsiConfigureProduct = mod.NewProc("MsiConfigureProductW")
 
 	oldUiLevel, _, _ := MsiSetInternalUI.Call(uintptr(2), uintptr(0))
 	buf := make([]uint16, cchGUID+1)
