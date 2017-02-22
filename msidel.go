@@ -86,8 +86,10 @@ func mainfunc() int {
 	// set up argument parsing
 	var oldCode string
 	var newCode string
+	var checkOnly bool
 	flag.StringVar(&oldCode, "oldcode", "", "Upgrade code of prior version")
 	flag.StringVar(&newCode, "newcode", "", "Upgrade code of current version (does not uninstall)")
+	flag.BoolVar(&checkOnly, "checkonly", false, "Don't trigger uninstall if found")
 	flag.Parse()
 
 	if oldCode == "" || newCode == "" {
@@ -103,6 +105,10 @@ func mainfunc() int {
 	installed = findAndUninstallRelatedProducts(oldCode, false)
 	if installed {
 		fmt.Printf("Found previous product as this user")
+		if checkOnly {
+			fmt.Printf("Not uninstalling previous found version")
+			return 1638
+		}
 		uninstalled := findAndUninstallRelatedProducts(oldCode, true)
 		if uninstalled {
 			fmt.Printf("Uninstalled previous product")
